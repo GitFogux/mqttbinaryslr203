@@ -15,13 +15,14 @@ public class Main
     }
 
     public static void doDebug() {
-        try
-        {
-            Main.doQuestion1(new DebugWriteChannel());
-        } catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
+       
+            try {
+                Main.doQuestion2(new DebugWriteChannel());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        
     }
 
     public static void doWithConnection() {
@@ -30,7 +31,7 @@ public class Main
             final InetAddress adress =InetAddress.getByName("localhost");
             final Socket socket = new Socket(adress, 1883);
             final WritableByteChannel channel = Channels.newChannel(socket.getOutputStream());
-            Main.doQuestion1(channel);
+            Main.doQuestion2(channel);
             socket.close();
         } catch (final IOException e)
         {
@@ -40,6 +41,12 @@ public class Main
 
     public static void doQuestion1(final WritableByteChannel channel) throws IOException {
         final ConnectMessage message = new ConnectMessage("python1");
+        message.setKeepAlive(60);
+        message.writeTo(channel);
+    }
+
+    public static void doQuestion2(final WritableByteChannel channel) throws IOException {
+        final PublishMessage message = new PublishMessage();
         message.setKeepAlive(60);
         message.writeTo(channel);
     }
