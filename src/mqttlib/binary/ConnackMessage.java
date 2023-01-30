@@ -36,4 +36,13 @@ public class ConnackMessage extends MqttMessage
         final int v = BitUtils.readByte(byteChannel);
         setResponse(ConnackResponses.getResp(v));
     }
+
+
+    @Override
+    public String toString()
+    {
+        return "ConnackMessage [response=" + this.response + " " + super.toString()+"]";
+    }
+
+
 }

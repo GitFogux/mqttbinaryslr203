@@ -118,4 +118,11 @@ public abstract class MqttMessage implements Sendable
 
     public abstract void initialise(final ReadableByteChannel byteChannel, int remainingLength) throws IOException;
 
+    @Override
+    public String toString()
+    {
+        return "MqttMessage [messageType=" + this.messageType + ", dup=" + this.dup + ", qos=" + this.qos + ", retain=" + this.retain + "]";
+    }
+
+
 }

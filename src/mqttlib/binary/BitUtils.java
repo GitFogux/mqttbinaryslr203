@@ -9,7 +9,7 @@ public class BitUtils
     public static byte readByte(final ReadableByteChannel channel) throws IOException {
         final ByteBuffer b = ByteBuffer.allocate(1);
         channel.read(b);
-        return b.get();
+        return b.get(0);
     }
 
     public static boolean readBit(final int v, final int index) {
@@ -24,7 +24,7 @@ public class BitUtils
     }
 
     public static long readLong(final long v, final int indexMin,final int nbBits) {
-        return  v >> 3 % (2 << nbBits);
+        return  v >> indexMin % (2 << nbBits);
     }
 
     public static long mergeLong(final long v,final long value, final int indexMin, final int nbBits) {
@@ -34,7 +34,7 @@ public class BitUtils
 
 
     public static int readInt(final int v, final int indexMin,final int nbBits) {
-        return  v >> 3 % (2 << nbBits);
+        return  v >> indexMin % (2 << nbBits);
     }
 
     public static int mergeInt(final int v,final int value, final int indexMin, final int nbBits) {

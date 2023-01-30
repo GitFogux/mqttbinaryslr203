@@ -7,47 +7,53 @@ import java.util.Arrays;
 
 public class PublishMessage extends MqttMessage
 {
-   
-    private int keepAlive;
+
+
+    private String topic;
+    private String payload;
+
+
 
     public PublishMessage() {
         super();
-        
-        this.keepAlive = 60;
-        
         super.setMessageType(MessageType.PUBLISH);
-        super.ensureHeaderToZeros();
-        // super.setDup(true);
-        super.setQos(0);
-
+    }
+    public String getTopic()
+    {
+        return this.topic;
+    }
+    public void setTopic(final String topic)
+    {
+        this.topic = topic;
+    }
+    public String getPayload()
+    {
+        return this.payload;
+    }
+    public void setPayload(final String payload)
+    {
+        this.payload = payload;
     }
 
     @Override
+    public String toString()
+    {
+        return "PublishMessage [topic=" + this.topic + ", payload=" + this.payload + " " + super.toString() +"]";
+    }
+    @Override
     public void writeTo(final WritableByteChannel channel) throws IOException
     {
-        String topic = "openlabpro";
-        String payload = "hello";
-    
         final BufferByteChannel buffer = new BufferByteChannel();
-        
-        new MqttSendableStringList(Arrays.asList(topic)).writeTo(buffer);
-        new MqttSendableStringList(Arrays.asList(payload)).writeTo(buffer);
-      
+
+        new MqttSendableStringList(Arrays.asList(this.topic)).writeTo(buffer);
+        new MqttSendableStringList(Arrays.asList(this.payload)).writeTo(buffer);
+
         super.writeTo(channel, buffer.getLength());
 
         buffer.flushTo(channel);
     }
-    
 
-    public int getKeepAlive()
-    {
-        return this.keepAlive;
-    }
-    public void setKeepAlive(final int keepAlive)
-    {
-        this.keepAlive = keepAlive;
-    }
-    
+
 
     @Override
     public void initialise(final ReadableByteChannel byteChannel, final int remainingLength) throws IOException
