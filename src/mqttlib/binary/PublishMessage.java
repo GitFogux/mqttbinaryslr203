@@ -1,6 +1,7 @@
 package mqttlib.binary;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Arrays;
@@ -11,12 +12,14 @@ public class PublishMessage extends MqttMessage
 
     private String topic;
     private String payload;
+    private int messageId;
 
 
 
     public PublishMessage() {
         super();
         super.setMessageType(MessageType.PUBLISH);
+        this.messageId = 553; //should come from a sofisticated object that makes ids available and unavailable based on puback acknowledgments..
     }
     public String getTopic()
     {
@@ -34,7 +37,14 @@ public class PublishMessage extends MqttMessage
     {
         this.payload = payload;
     }
-
+    public int getMessageId()
+    {
+        return this.messageId;
+    }
+    public void setMessageId(final int messageId)
+    {
+        this.messageId = messageId;
+    }
     @Override
     public String toString()
     {
@@ -46,6 +56,10 @@ public class PublishMessage extends MqttMessage
         final BufferByteChannel buffer = new BufferByteChannel();
 
         new MqttSendableStringList(Arrays.asList(this.topic)).writeTo(buffer);
+
+        if(getQos() > 0) {
+            buffer.write(ByteBuffer.wrap(new byte[] {BitUtils.getByteOfRank(this.messageId, 1),BitUtils.getByteOfRank(this.messageId, 0)}));
+        }
         new MqttSendableStringList(Arrays.asList(this.payload)).writeTo(buffer);
 
         super.writeTo(channel, buffer.getLength());

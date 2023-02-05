@@ -33,6 +33,10 @@ public class BitUtils
     }
 
 
+    public static byte getByteOfRank(final int v, final int rank) {
+        return (byte) BitUtils.readInt(v,8*rank,8);
+    }
+
     public static int readInt(final int v, final int indexMin,final int nbBits) {
         return  v >> indexMin % (2 << nbBits);
     }

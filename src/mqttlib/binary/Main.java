@@ -89,9 +89,9 @@ public class Main
 
     public static PublishMessage doQuestion2() throws IOException {
         final PublishMessage message = new PublishMessage();
-        message.setTopic("openlabpro");
-        message.setPayload("hello");
-        message.setQos(0);
+        message.setTopic("ccc");
+        message.setPayload("hello34");
+        message.setQos(1);
         return message;
     }
 }
